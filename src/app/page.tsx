@@ -1,95 +1,53 @@
-import Image from "next/image";
+"use client";
+
+import useMousePosition from "@/utils/useMousePosition";
 import styles from "./page.module.css";
+import { motion } from "motion/react";
+import { useState } from "react";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    const [isHovering, setIsHovering] = useState(false);
+    const { x, y } = useMousePosition();
+    const maskSize = isHovering ? 450 : 50; // as set in page.module.css
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    return (
+        <div className={styles.container}>
+            <div className={styles.main}>
+                <p>
+                    <span className={styles.emphasis}>
+                        The ancient art of blacksmithing
+                    </span>{" "}
+                    once shaped civilizations, forging mighty swords and
+                    intricate armor. Today, it survives as a niche craft,
+                    blending tradition with modern techniques. Sparks fly as
+                    molten metal bends under expert hammer strikes, a dance of
+                    fire and steel. Despite automation, human skill remains
+                    irreplaceable in metalwork. ⚒️
+                </p>
+            </div>
+
+            <motion.div
+                className={styles.mask}
+                animate={{
+                    WebkitMaskPosition: `${x - maskSize / 2}px ${
+                        y - maskSize / 2
+                    }px`,
+                    WebkitMaskSize: `${maskSize}px`,
+                }}
+                transition={{ type: "tween", ease: "backOut" }}
+            >
+                <p
+                    onMouseEnter={() => setIsHovering(true)}
+                    onMouseLeave={() => setIsHovering(false)}
+                >
+                    A squirrel’s daily routine is pure chaos—chasing rivals,
+                    burying nuts, then forgetting their locations. They embody
+                    controlled panic, darting across roads like furry
+                    daredevils. Scientists say they plant thousands of trees by
+                    accident, proving that forgetfulness sometimes benefits
+                    nature. So, appreciate them! 🐿️
+                </p>
+            </motion.div>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }
